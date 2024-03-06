@@ -60,26 +60,6 @@ drop_off_time = df.loc[df['Data'] == 'Drop off time', 'Example'].values[0]
 job_id = df.loc[df['Data'] == 'Job ID', 'Example'].values[0]
 tracking_id = df.loc[df['Data'] == 'Tracking ID', 'Example'].values[0]
 
-initial_message = """
-Hello {name},
-
-We’re pleased to have awarded {company_name} Shipment {job_ID} from {pick_up_location} to {drop_off_location}. As you are a verified carrier, welcome back. Please let us know if any of your carrier details have changed since your last job on {last_job_date}.
-
-The shipment pick up and drop off details are below:
-- **Pick-up Location:** {pick_up_location}
-- **Pick-up Time:** {pick_up_time}
-- **Drop-off Location:** {drop_off_location}
-- **Drop-off Time:** {drop_off_time}
-
-Please use the link provided to engage tracking. This is a mandatory requirement for all our carriers.
-**Tracking ID:** {tracking_ID}
-
-Any questions, please don’t hesitate to ask.
-
-Thanks,  
-TILT
-"""
-
 assistant = ShippingAssistant(path_to_xlsx)
 
 # Streamlit UI code
@@ -88,6 +68,26 @@ st.title("Shipping Assistant")
 with st.sidebar:
     name = st.text_input("Your Name", key="name", type="default")
     company_name = st.text_input("Company Name", key="company", type="default")
+
+initial_message = f"""
+Hello {name},
+
+We’re pleased to have awarded {company_name} Shipment {job_id} from {pick_up_location} to {drop_off_location}. As you are a verified carrier, welcome back. Please let us know if any of your carrier details have changed since your last job on {last_job_date}.
+
+The shipment pick up and drop off details are below:
+- **Pick-up Location:** {pick_up_location}
+- **Pick-up Time:** {pick_up_time}
+- **Drop-off Location:** {drop_off_location}
+- **Drop-off Time:** {drop_off_time}
+
+Please use the link provided to engage tracking. This is a mandatory requirement for all our carriers.
+**Tracking ID:** {tracking_id}
+
+Any questions, please don’t hesitate to ask.
+
+Thanks,  
+TILT
+"""
 
 if not (name and company_name):
     st.info("Please provide Your Name and Company Name to start chatting!")
