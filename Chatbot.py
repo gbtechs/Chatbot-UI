@@ -1,9 +1,9 @@
 import pandas as pd
 import streamlit as st
 from langchain_community.document_loaders import UnstructuredExcelLoader
-from langchain_community.vectorstores import Chroma
+# from langchain_community.vectorstores import Chroma
 from langchain_core.output_parsers import StrOutputParser
-from langchain_openai import ChatOpenAI, OpenAIEmbeddings
+from langchain_openai import ChatOpenAI
 from langchain.prompts import PromptTemplate
 from langchain_community.vectorstores.utils import filter_complex_metadata
 
@@ -13,8 +13,8 @@ class ShippingAssistant:
         self.loader = UnstructuredExcelLoader(path_to_xlsx, mode="elements")
         self.docs = self.loader.load()
         self.docs = filter_complex_metadata(self.docs)
-        self.vectorstore = Chroma.from_documents(documents=self.docs, embedding=OpenAIEmbeddings())
-        self.retriever = self.vectorstore.as_retriever()
+        # self.vectorstore = Chroma.from_documents(documents=self.docs, embedding=OpenAIEmbeddings())
+        # self.retriever = self.vectorstore.as_retriever()
         self.mem = ""
 
     def ask_query(self, query, carrier_name, shipment_id, departure_city, destination_city):
