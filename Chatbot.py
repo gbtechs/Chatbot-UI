@@ -59,6 +59,7 @@ pick_up_time = df.loc[df['Data'] == 'Pick up time', 'Example'].values[0]
 drop_off_time = df.loc[df['Data'] == 'Drop off time', 'Example'].values[0]
 job_id = df.loc[df['Data'] == 'Job ID', 'Example'].values[0]
 tracking_id = df.loc[df['Data'] == 'Tracking ID', 'Example'].values[0]
+last_job_date = df.loc[df['Data'] == 'Last Job Date', 'Example'].values[0]
 
 assistant = ShippingAssistant(path_to_xlsx)
 
