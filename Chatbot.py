@@ -55,8 +55,8 @@ path_to_xlsx = "Database ChatGPT (1).xlsx"
 df = pd.read_excel(path_to_xlsx)
 pick_up_location = df.loc[df['Data'] == 'Pick Up Location', 'Example'].values[0]
 drop_off_location = df.loc[df['Data'] == 'Drop Off Location', 'Example'].values[0]
-pick_up_time = df.loc[df['Data'] == 'Pick Up Time', 'Example'].values[0]
-drop_off_time = df.loc[df['Data'] == 'Drop Off Time', 'Example'].values[0]
+pick_up_time = df.loc[df['Data'] == 'Pick up time', 'Example'].values[0]
+drop_off_time = df.loc[df['Data'] == 'Drop off time', 'Example'].values[0]
 job_id = df.loc[df['Data'] == 'Job ID', 'Example'].values[0]
 tracking_id = df.loc[df['Data'] == 'Tracking ID', 'Example'].values[0]
 
