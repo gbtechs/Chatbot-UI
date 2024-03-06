@@ -59,14 +59,14 @@ assistant = ShippingAssistant(path_to_xlsx)
 
 with st.sidebar:
     #openai_api_key = st.text_input("OpenAI API Key", key="chatbot_api_key", type="password")
-    user_name = st.text_input("User Name", key="name", type="default")
-    company_name = st.text_input("company Name", key="company", type="default")
+    user_name = st.text_input("Your Name", key="name", type="default")
+    company_name = st.text_input("Company Name", key="company", type="default")
     
 if not (user_name and company_name):
-    st.info("Please add Your Name and Company name ")
+    st.info("Please provide Your Name and Company Name to start chatting!")
 else:
     if "messages" not in st.session_state:
-        st.session_state["messages"] = [{"role": "assistant", "content": f"hi {user_name} We're pleased to have awarded {company_name} the pickUp to drop route"}]
+        st.session_state["messages"] = [{"role": "assistant", "content": f"Hi {user_name}, We're pleased to have awarded {company_name} the Departure City to Destination City route"}]
     for msg in st.session_state.messages:
         st.chat_message(msg["role"]).write(msg["content"])
 
@@ -74,10 +74,8 @@ else:
         # client = OpenAI()
         st.session_state.messages.append({"role": "user", "content": prompt})
         st.chat_message("user").write(prompt)
-        #response = client.chat.completions.create(model="gpt-3.5-turbo", messages=st.session_state.messages)
-        response1 = assistant.ask_query(prompt, "Carrier 1", "123", "NYC", "LAX",)
-        print(response1)
+        response = assistant.ask_query(prompt, "Carrier 1", "123", "NYC", "LAX",)
+        print(response)
         #msg = response.choices[0].message.content
-        msg=response1
-        st.session_state.messages.append({"role": "assistant", "content": msg})
-        st.chat_message("assistant").write(msg)
+        st.session_state.messages.append({"role": "assistant", "content": response})
+        st.chat_message("assistant").write(response)
