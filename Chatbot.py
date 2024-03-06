@@ -55,10 +55,30 @@ path_to_xlsx = "Database ChatGPT (1).xlsx"
 df = pd.read_excel(path_to_xlsx)
 pick_up_location = df.loc[df['Data'] == 'Pick Up Location', 'Example'].values[0]
 drop_off_location = df.loc[df['Data'] == 'Drop Off Location', 'Example'].values[0]
+pick_up_time = df.loc[df['Data'] == 'Pick Up Time', 'Example'].values[0]
+drop_off_time = df.loc[df['Data'] == 'Drop Off Time', 'Example'].values[0]
+job_id = df.loc[df['Data'] == 'Job ID', 'Example'].values[0]
+tracking_id = df.loc[df['Data'] == 'Tracking ID', 'Example'].values[0]
 
-print("Pick Up Location:", pick_up_location)
-print("Drop Off Location:", drop_off_location)
+initial_message = """
+Hello {name},
 
+We’re pleased to have awarded {company_name} Shipment {job_ID} from {pick_up_location} to {drop_off_location}. As you are a verified carrier, welcome back. Please let us know if any of your carrier details have changed since your last job on {last_job_date}.
+
+The shipment pick up and drop off details are below:
+- **Pick-up Location:** {pick_up_location}
+- **Pick-up Time:** {pick_up_time}
+- **Drop-off Location:** {drop_off_location}
+- **Drop-off Time:** {drop_off_time}
+
+Please use the link provided to engage tracking. This is a mandatory requirement for all our carriers.
+**Tracking ID:** {tracking_ID}
+
+Any questions, please don’t hesitate to ask.
+
+Thanks,  
+TILT
+"""
 
 assistant = ShippingAssistant(path_to_xlsx)
 
@@ -66,14 +86,14 @@ assistant = ShippingAssistant(path_to_xlsx)
 st.title("Shipping Assistant")
 
 with st.sidebar:
-    user_name = st.text_input("Your Name", key="name", type="default")
+    name = st.text_input("Your Name", key="name", type="default")
     company_name = st.text_input("Company Name", key="company", type="default")
 
-if not (user_name and company_name):
+if not (name and company_name):
     st.info("Please provide Your Name and Company Name to start chatting!")
 else:
     if "messages" not in st.session_state:
-        st.session_state["messages"] = [{"role": "assistant", "content": f"Hi {user_name}, We're pleased to have awarded {company_name} the {pick_up_location} to {drop_off_location} route"}]
+        st.session_state["messages"] = [{"role": "assistant", "content": initial_message}]
 
     for msg in st.session_state.messages:
         st.chat_message(msg["role"]).write(msg["content"])

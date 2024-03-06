@@ -2,7 +2,6 @@ langchain
 langchain-community
 langchainhub
 langchain-openai
-chromadb
 unstructured
 networkx
 pandas
