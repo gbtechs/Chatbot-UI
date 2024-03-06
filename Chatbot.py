@@ -6,14 +6,6 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langchain.prompts import PromptTemplate
 from langchain_community.vectorstores.utils import filter_complex_metadata
-import os
-
-api_key = os.environ.get('OPENAI_API_KEY')
-
-if api_key:
-    print("API Key found")
-else:
-    print("OPENAI_API_KEY environment variable is not set.")
 
 class ShippingAssistant:
     def __init__(self, path_to_xlsx):
@@ -21,7 +13,7 @@ class ShippingAssistant:
         self.loader = UnstructuredExcelLoader(path_to_xlsx, mode="elements")
         self.docs = self.loader.load()
         self.docs = filter_complex_metadata(self.docs)
-        self.vectorstore = Chroma.from_documents(documents=self.docs, embedding=OpenAIEmbeddings(api_key))
+        self.vectorstore = Chroma.from_documents(documents=self.docs, embedding=OpenAIEmbeddings())
         self.retriever = self.vectorstore.as_retriever()
         self.mem = ""
 
@@ -48,7 +40,7 @@ class ShippingAssistant:
             input_variables=["query"],
             template=rag_template,
         )
-        llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0, openai_api_key=api_key)
+        llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0)
         rag_chain = prompt | llm | StrOutputParser()
 
         resp = rag_chain.invoke({"query": f"{query}"})
