@@ -1,4 +1,4 @@
-from openai import OpenAI
+import pandas as pd
 import streamlit as st
 from langchain_community.document_loaders import UnstructuredExcelLoader
 from langchain_community.vectorstores import Chroma
@@ -49,33 +49,38 @@ class ShippingAssistant:
 
         print(self.mem)
         return resp
-
-
-
+    
+    
 path_to_xlsx = "Database ChatGPT (1).xlsx"
+df = pd.read_excel(path_to_xlsx)
+pick_up_location = df.loc[df['Data'] == 'Pick Up Location', 'Example'].values[0]
+drop_off_location = df.loc[df['Data'] == 'Drop Off Location', 'Example'].values[0]
+
+print("Pick Up Location:", pick_up_location)
+print("Drop Off Location:", drop_off_location)
+
+
 assistant = ShippingAssistant(path_to_xlsx)
 
-
+# Streamlit UI code
+st.title("Shipping Assistant")
 
 with st.sidebar:
-    #openai_api_key = st.text_input("OpenAI API Key", key="chatbot_api_key", type="password")
     user_name = st.text_input("Your Name", key="name", type="default")
     company_name = st.text_input("Company Name", key="company", type="default")
-    
+
 if not (user_name and company_name):
     st.info("Please provide Your Name and Company Name to start chatting!")
 else:
     if "messages" not in st.session_state:
-        st.session_state["messages"] = [{"role": "assistant", "content": f"Hi {user_name}, We're pleased to have awarded {company_name} the Departure City to Destination City route"}]
+        st.session_state["messages"] = [{"role": "assistant", "content": f"Hi {user_name}, We're pleased to have awarded {company_name} the {pick_up_location} to {drop_off_location} route"}]
+
     for msg in st.session_state.messages:
         st.chat_message(msg["role"]).write(msg["content"])
 
     if prompt := st.chat_input():
-        # client = OpenAI()
         st.session_state.messages.append({"role": "user", "content": prompt})
         st.chat_message("user").write(prompt)
-        response = assistant.ask_query(prompt, "Carrier 1", "123", "NYC", "LAX",)
-        print(response)
-        #msg = response.choices[0].message.content
+        response = assistant.ask_query(prompt, "Carrier 1", "123", "NYC", "LAX")
         st.session_state.messages.append({"role": "assistant", "content": response})
         st.chat_message("assistant").write(response)
