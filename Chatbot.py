@@ -62,13 +62,17 @@ tracking_id = df.loc[df['Data'] == 'Tracking ID', 'Example'].values[0]
 last_job_date = df.loc[df['Data'] == 'Last Job Date', 'Example'].values[0]
 
 assistant = ShippingAssistant(path_to_xlsx)
+st.set_page_config(page_title='TILT', layout = 'wide', page_icon = 'logo.svg', initial_sidebar_state = 'auto')
 
 # Streamlit UI code
 st.title("Shipping Assistant")
 
 with st.sidebar:
+    st.image("logo.svg", width=150)
+    st.text("\n \n \n \n \n \n \n")
     name = st.text_input("Your Name", key="name", type="default")
     company_name = st.text_input("Company Name", key="company", type="default")
+    
 
 initial_message = f"""
 Hello {name},
